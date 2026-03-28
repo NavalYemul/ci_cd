@@ -18,7 +18,13 @@ jobs:
       - name: Install Databricks CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+          echo "$HOME/.databricks/bin" >> $GITHUB_PATH
 
+      - name: Verify CLI
+        run: |
+            which databricks
+            databricks --version
+            
       - name: Set Environment Variables
         run: |
           echo "DATABRICKS_HOST=${{ secrets.DATABRICKS_HOST }}" >> $GITHUB_ENV
@@ -26,7 +32,7 @@ jobs:
 
       - name: Test Databricks Auth
         run: databricks current-user me
-        
+
       - name: Validate Bundle
         run: databricks bundle validate
 
