@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    ci_cd:
+      name: ci_cd
+      tasks:
+        - task_key: bronze
+          notebook_task:
+            notebook_path: ../src/bronze.ipynb
+            base_parameters:
+              catalog: ${var.catalog}
+            source: WORKSPACE
+          existing_cluster_id: 0121-043017-rmjj7yci
+        - task_key: silver_gold
+          depends_on:
+            - task_key: bronze
+          notebook_task:
+            notebook_path: ../src/silver.ipynb
+            base_parameters:
+              catalog: ${var.catalog}
+            source: WORKSPACE
+          existing_cluster_id: 0121-043017-rmjj7yci
+      queue:
+        enabled: true
